@@ -5,9 +5,11 @@ Visual Novell Game supply
 
 Install [Brew](https://brew.sh/)
 
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 Install `rsync`
 
-`brew install rsync`
+```bash
+brew install rsync
 
