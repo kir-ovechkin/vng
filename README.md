@@ -21,12 +21,21 @@ Download current version (to Game folder on Desktop)
 
 ```bash
 rsync -avz --rsync-path="sudo rsync" \
-roarstreet-quest.com:/var/www/roarstreet ~/Desktop/Game
+  roarstreet-quest.com:/var/www/roarstreet ~/Desktop/Game
 ```
 
 Make a backup copy
 
 ```bash
 ssh roarstreet-quest.com \
-"sudo cp -a /var/www/roarstreet /var/www/roarstreet_$(date +%Y-%m-%d_%H-%M-%S)"
+  "sudo cp -a /var/www/roarstreet /var/www/roarstreet_$(date +%Y-%m-%d_%H-%M-%S)"
+```
+
+Release new version
+
+```bash
+rsync -avz --delete \
+  --rsync-path="sudo rsync" \
+  ~/Desktop/Game/roarstreet/ \
+  roarstreet-quest.com:/var/www/roarstreet/
 ```
