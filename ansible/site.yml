@@ -1,0 +1,13 @@
+---
+- name: Single host all-in-one
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Configure sysctl
+      include_tasks: tasks/sysctl.yml
+      tags: sysctl
+
+  handlers:
+    - name: Reload sysctl
+      command: sysctl --system
