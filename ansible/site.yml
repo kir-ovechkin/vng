@@ -8,6 +8,10 @@
       include_tasks: tasks/sysctl.yml
       tags: sysctl
 
+    - name: Configure users
+      include_tasks: tasks/users.yml
+      tags: users
+
   handlers:
     - name: Reload sysctl
       command: sysctl --system

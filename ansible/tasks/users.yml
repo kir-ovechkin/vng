@@ -1,0 +1,29 @@
+---
+- name: Create users with SSH keys and sudo
+  vars:
+    users:
+      - name: kiriukhin
+        ssh_keys:
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/sf6WHUg5LznjxXH9a9NtHXCSRM4UX021D5sWNwPky macbook"
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPyqBSokjMKvfMcE9+DwDTcgf9eCtCEizXf01A8h7Ti windows-home-pc"
+
+      - name: ovechkin
+        ssh_keys:
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiLAA37vmNq9NrB9BgNCMDCrO+rdVH6bIru3PFvRFBG"
+
+  block:
+    - name: Create users
+      user:
+        name: "{{ item.name }}"
+        shell: /bin/bash
+        create_home: true
+        groups: wheel
+        append: true
+      loop: "{{ users }}"
+
+    - name: Add SSH authorized keys
+      authorized_key:
+        user: "{{ item.0.name }}"
+        key: "{{ item.1 }}"
+        state: present
+      loop: "{{ users | subelements('ssh_keys') }}"
