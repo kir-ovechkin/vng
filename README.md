@@ -33,6 +33,13 @@ Install `rsync`
 choco install rsync -y
 ```
 
+### Both – generate ssh-key
+
+```
+ssh-keygen -t ed25519 -a 100
+cat ~/.ssh/id_ed25519.pub
+```
+
 ## Release
 
 Download current version (to Game folder on Desktop)
