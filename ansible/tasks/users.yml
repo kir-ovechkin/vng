@@ -10,6 +10,7 @@
       - name: ovechkin
         ssh_keys:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiLAA37vmNq9NrB9BgNCMDCrO+rdVH6bIru3PFvRFBG"
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIERoO7X94TPk8O+JrHm631zWqGZCkRVi4k10s8Q1V4xc win-note"
 
   block:
     - name: Create users
