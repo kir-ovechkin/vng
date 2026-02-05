@@ -3,6 +3,8 @@ Visual Novell Game supply
 
 ## Presquisites
 
+### MacOS
+
 Install [Brew](https://brew.sh/)
 
 ```bash
@@ -13,6 +15,22 @@ Install `rsync`
 
 ```bash
 brew install rsync
+```
+
+### Windows
+
+Install [choco](https://chocolatey.org/install)
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+
+Install `rsync`
+
+```powershel
+choco install rsync -y
 ```
 
 ## Release
