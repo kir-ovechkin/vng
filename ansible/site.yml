@@ -5,15 +5,15 @@
 
   tasks:
     - name: Configure sysctl
-      include_tasks: tasks/sysctl.yml
+      import_tasks: tasks/sysctl.yml
       tags: sysctl
 
     - name: Configure users
-      include_tasks: tasks/users.yml
+      import_tasks: tasks/users.yml
       tags: users
 
     - name: Certbot
-      include_tasks: tasks/certbot.yml
+      import_tasks: tasks/certbot.yml
       tags: certbot
 
     - name: Work with files and dirs
