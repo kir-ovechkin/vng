@@ -1,0 +1,16 @@
+---
+- name: Install EPEL repo
+  package:
+    name: epel-release
+    state: present
+
+- name: Install certbot
+  package:
+    name: certbot
+    state: present
+
+- name: Ensure certbot timer enabled (systemd)
+  systemd:
+    name: certbot-renew.timer
+    enabled: true
+    state: started

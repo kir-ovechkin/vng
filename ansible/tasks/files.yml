@@ -1,0 +1,18 @@
+---
+- name: Set group ownership for /var/www
+  file:
+    path: /var/www
+    group: dev
+    recurse: true
+
+- name: Ensure group write permissions on /var/www
+  file:
+    path: /var/www
+    mode: "g+rwX"
+    recurse: true
+
+- name: Set setgid bit on /var/www directories
+  file:
+    path: /var/www
+    mode: "2775"
+    state: directory

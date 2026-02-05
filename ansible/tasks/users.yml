@@ -6,21 +6,38 @@
         ssh_keys:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/sf6WHUg5LznjxXH9a9NtHXCSRM4UX021D5sWNwPky macbook"
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPyqBSokjMKvfMcE9+DwDTcgf9eCtCEizXf01A8h7Ti windows-home-pc"
+        groups:
+          - wheel
+          - dev
 
       - name: ovechkin
         ssh_keys:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiLAA37vmNq9NrB9BgNCMDCrO+rdVH6bIru3PFvRFBG"
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIERoO7X94TPk8O+JrHm631zWqGZCkRVi4k10s8Q1V4xc win-note"
+        groups:
+          - wheel
+          - dev
 
   block:
+    - name: Create groups
+      group:
+        name: dev
+
     - name: Create users
       user:
         name: "{{ item.name }}"
         shell: /bin/bash
         create_home: true
-        groups: wheel
+        group: dev
         append: true
       loop: "{{ users }}"
+
+    - name: Change user groups
+      user:
+        name: "{{ item.0.name }}"
+        groups: "{{ item.1 }}"
+        append: true
+      loop: "{{ users | subelements('groups') }}"
 
     - name: Add SSH authorized keys
       authorized_key:

@@ -12,6 +12,14 @@
       include_tasks: tasks/users.yml
       tags: users
 
+    - name: Certbot
+      include_tasks: tasks/certbot.yml
+      tags: certbot
+
+    - name: Work with files and dirs
+      import_tasks: tasks/files.yml
+      tags: files
+
   handlers:
     - name: Reload sysctl
       command: sysctl --system
