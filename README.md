@@ -27,10 +27,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force;
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
-Install `rsync`
+Install `rsync` and `openssh`
 
 ```powershel
-choco install rsync -y
+choco install rsync openssh -y
 ```
 
 ### Both – generate ssh-key
@@ -45,7 +45,7 @@ cat ~/.ssh/id_ed25519.pub
 Download current version (to Game folder on Desktop)
 
 ```bash
-rsync -avz --rsync-path="sudo rsync" \
+rsync -avz \
   roarstreet-quest.com:/var/www/roarstreet ~/Desktop/Game
 ```
 
@@ -53,14 +53,13 @@ Make a backup copy
 
 ```bash
 ssh roarstreet-quest.com \
-  "sudo cp -a /var/www/roarstreet /var/www/roarstreet_$(date +%Y-%m-%d_%H-%M-%S)"
+  "cp -a /var/www/roarstreet /var/www/roarstreet_$(date +%Y-%m-%d_%H-%M-%S)"
 ```
 
 Release new version
 
 ```bash
 rsync -avz --delete \
-  --rsync-path="sudo rsync" \
   ~/Desktop/Game/roarstreet/ \
   roarstreet-quest.com:/var/www/roarstreet/
 ```
