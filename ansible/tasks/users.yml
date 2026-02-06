@@ -6,6 +6,7 @@
         ssh_keys:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ/sf6WHUg5LznjxXH9a9NtHXCSRM4UX021D5sWNwPky macbook"
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPyqBSokjMKvfMcE9+DwDTcgf9eCtCEizXf01A8h7Ti windows-home-pc"
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGxnI9OwjUC1HgTKJ3UD4b13j0qJHchKxD4Vm0ECYAAU cityumd_okiriukh"
         groups:
           - wheel
           - dev
