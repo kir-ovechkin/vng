@@ -35,8 +35,12 @@ choco install rsync openssh -y
 
 ### Both – generate ssh-key
 
+Generation ssh-key
 ```
 ssh-keygen -t ed25519 -a 100
+```
+Get public key part
+```
 cat ~/.ssh/id_ed25519.pub
 ```
 
