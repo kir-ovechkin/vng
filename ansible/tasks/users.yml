@@ -19,6 +19,12 @@
           - wheel
           - dev
 
+      - name: xinyi
+        ssh_keys:
+          - "ssh-ed25519 AAAAC3NzaC11ZDI1NTE5AAAA10bkZ+mHjPkKbsCfS/TNLXmIWLpLncptTK283GvoLUHE"
+        groups:
+          - dev
+
   block:
     - name: Create groups
       group:
