@@ -4,9 +4,17 @@
   become: true
 
   tasks:
+    - name: Base config
+      import_tasks: tasks/base.yml
+      tags: base
+
     - name: Configure sysctl
       import_tasks: tasks/sysctl.yml
       tags: sysctl
+
+    - name: Configure fail2ban
+      import_tasks: tasks/fail2ban.yml
+      tags: fail2ban
 
     - name: Configure users
       import_tasks: tasks/users.yml
@@ -23,3 +31,8 @@
   handlers:
     - name: Reload sysctl
       command: sysctl --system
+
+    - name: restart fail2ban
+      systemd:
+        name: fail2ban
+        state: restarted

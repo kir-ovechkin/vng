@@ -1,9 +1,4 @@
 ---
-- name: Install EPEL repo
-  package:
-    name: epel-release
-    state: present
-
 - name: Install certbot
   package:
     name: certbot

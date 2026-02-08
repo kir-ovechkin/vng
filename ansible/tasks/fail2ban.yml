@@ -1,0 +1,67 @@
+---
+- name: Install fail2ban
+  package:
+    name:
+      - fail2ban
+    state: present
+
+- name: Configure fail2ban jail.local
+  copy:
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [DEFAULT]
+      bantime  = 1h
+      findtime = 10m
+      maxretry = 5
+
+      banaction = iptables-multiport
+
+      ignoreip = 127.0.0.1/8 ::1
+
+      [sshd]
+      enabled = true
+      port    = ssh
+  notify: restart fail2ban
+
+- name: Deploy fail2ban filter for WordPress scans
+  copy:
+    dest: /etc/fail2ban/filter.d/nginx-wp-scan.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Definition]
+
+      failregex = ^<HOST> - .* "(GET|POST) .*(/wp-includes/wlwmanifest\.xml).* HTTP/.+"$
+                  ^<HOST> - .* "(GET|POST) .*(/wp-admin/setup-config\.php).* HTTP/.+"$
+                  ^<HOST> - .* "(GET|POST) .*/wp-login\.php.* HTTP/.+"$
+                  ^<HOST> - .* "(GET|POST) .*/xmlrpc\.php.* HTTP/.+"$
+
+      ignoreregex =
+  notify: restart fail2ban
+
+- name: Deploy fail2ban jail for WordPress scans
+  copy:
+    dest: /etc/fail2ban/jail.d/nginx-wp.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [nginx-wp-scan]
+      enabled  = true
+      filter   = nginx-wp-scan
+      port     = 80,443
+      logpath  = /var/log/nginx/*.log tail
+      maxretry = 3
+      findtime = 1m
+      bantime  = 1h
+  notify: restart fail2ban
+
+- name: Enable and start fail2ban
+  systemd:
+    name: fail2ban
+    enabled: true
+    state: started

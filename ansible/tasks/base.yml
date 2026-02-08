@@ -1,0 +1,9 @@
+---
+- name: Install EPEL repo
+  package:
+    name: epel-release
+    state: present
+
+- name: Set system hostname from inventory name
+  hostname:
+    name: "{{ inventory_hostname }}"
