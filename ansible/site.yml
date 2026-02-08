@@ -12,6 +12,10 @@
       import_tasks: tasks/sysctl.yml
       tags: sysctl
 
+    - name: Configure iptables
+      import_tasks: tasks/iptables.yml
+      tags: iptables
+
     - name: Configure fail2ban
       import_tasks: tasks/fail2ban.yml
       tags: fail2ban

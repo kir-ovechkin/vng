@@ -1,0 +1,49 @@
+---
+- name: Configure iptables scan protection
+
+  vars:
+    iptables_rules: |
+      *filter
+      :INPUT ACCEPT [0:0]
+      :FORWARD ACCEPT [0:0]
+      :OUTPUT ACCEPT [0:0]
+      :input_tcp_scan - [0:0]
+      :input_udp_scan - [0:0]
+
+      # attach chains
+      -A INPUT -p tcp -j input_tcp_scan
+      -A INPUT -p udp -j input_udp_scan
+
+      # TCP stealth scans
+      -A input_tcp_scan -p tcp --tcp-flags ACK,FIN FIN -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ACK,PSH PSH -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ACK,URG URG -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL ALL -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL NONE -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL SYN,FIN -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL URG,PSH,FIN -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL FIN -j DROP
+      -A input_tcp_scan -p tcp --tcp-flags ALL URG,PSH,SYN,FIN -j DROP
+      -A input_tcp_scan -j RETURN
+
+      # UDP empty packets
+      -A input_udp_scan -p udp -m length --length 0:28 -m limit --limit 6/hour --limit-burst 1 -j LOG --log-prefix "Firewall>0 length udp "
+      -A input_udp_scan -p udp -m length --length 0:28 -j DROP
+      -A input_udp_scan -j RETURN
+
+      COMMIT
+
+  block:
+
+    - name: Deploy iptables rules
+      copy:
+        dest: /etc/sysconfig/iptables
+        mode: '0644'
+        content: "{{ iptables_rules }}"
+
+    - name: Apply iptables rules
+      shell: iptables-restore < /etc/sysconfig/iptables
+      notify: restart fail2ban
