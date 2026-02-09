@@ -60,6 +60,35 @@
       bantime  = 1h
   notify: restart fail2ban
 
+- name: Add fail2ban filter for TCP port scans
+  copy:
+    dest: /etc/fail2ban/filter.d/iptables-portscan.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      [Definition]
+      failregex = ^.*kernel: INPUT REJECT:.*SRC=<HOST>.*PROTO=TCP.*SYN.*
+      ignoreregex =
+  notify: restart fail2ban
+
+- name: Add fail2ban jail for TCP port scans
+  copy:
+    dest: /etc/fail2ban/jail.d/iptables-portscan.local
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      [iptables-portscan]
+      enabled  = true
+      filter   = iptables-portscan
+      logpath  = /var/log/messages tail
+      maxretry = 10
+      findtime = 1m
+      bantime  = 1h
+      banaction = iptables-allports
+  notify: restart fail2ban
+
 - name: Enable and start fail2ban
   systemd:
     name: fail2ban

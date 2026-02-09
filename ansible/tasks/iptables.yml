@@ -38,7 +38,6 @@
       -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
       -A INPUT -p icmp -j ACCEPT
       -A INPUT -i lo -j ACCEPT
-      -A INPUT -s 185.106.172.0/22 -j ACCEPT -m comment --comment "our external addresses"
       -A INPUT -p tcp --syn -m multiport --dports 80,443 -m connlimit --connlimit-above 20 -j LOG --log-prefix "CONNLIMIT: " --log-level 4
       -A INPUT -p tcp --syn -m multiport --dports 80,443 -m connlimit --connlimit-above 20 -j REJECT --reject-with tcp-reset
       -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT
